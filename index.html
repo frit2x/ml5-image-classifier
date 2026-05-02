@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>ml5 Image Classification</title>
+
+  <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Bildklassifikation mit ml5 (MobileNet)</h1>
+
+<!-- Beispielbilder -->
+<h2>✔ Korrekte Klassifikation</h2>
+<div class="grid">
+  <img src="assets/correct/cat.jpeg" onclick="classifyImage(this)">
+  <img src="assets/correct/dog.jpeg" onclick="classifyImage(this)">
+  <img src="assets/correct/pic_3.jpeg" onclick="classifyImage(this)">
+</div>
+
+<h2>✘ Falsche Klassifikation</h2>
+<div class="grid">
+  <img src="assets/wrong/weird1.jpg" onclick="classifyImage(this)">
+  <img src="assets/wrong/weird2.jpg" onclick="classifyImage(this)">
+  <img src="assets/wrong/weird3.jpg" onclick="classifyImage(this)">
+</div>
+
+<!-- User Upload -->
+<h2>Eigenes Bild testen</h2>
+
+<div id="upload-section">
+  <input type="file" id="upload" accept="image/*">
+  <div id="dropzone">Bild hier hineinziehen</div>
+</div>
+
+<div class="container">
+  <div>
+    <img id="preview">
+    <button onclick="classifyUserImage()">Classify</button>
+  </div>
+
+  <div>
+    <canvas id="chart"></canvas>
+  </div>
+</div>
+
+<!-- Diskussion -->
+<h2>Diskussion</h2>
+<p>
+MobileNet funktioniert gut bei klaren, typischen Bildern aus dem ImageNet-Datensatz.
+Probleme treten bei ungewöhnlichen Perspektiven, schlechter Beleuchtung oder mehreren Objekten auf.
+Auch abstrahierte oder manipulierte Bilder führen oft zu Fehlklassifikationen.
+Dies liegt daran, dass das Modell auf typische Muster trainiert ist (Bias im Datensatz).
+</p>
+
+<!-- Dokumentation -->
+<h2>Dokumentation</h2>
+
+<h3>Technisch</h3>
+<ul>
+  <li>ml5.js: Vereinfachte Nutzung von Machine Learning im Browser</li>
+  <li>TensorFlow.js: ML-Backend</li>
+  <li>Chart.js: Visualisierung der Klassifikation</li>
+</ul>
+
+<h3>Fachlich</h3>
+<p>
+Es wird ein vortrainiertes MobileNet-Modell verwendet. Die Klassifikation erfolgt clientseitig.
+Die Top-Klassen werden mit ihren Wahrscheinlichkeiten (Confidence) als Balkendiagramm dargestellt.
+</p>
+
+<script src="script.js"></script>
+
+</body>
+</html>
