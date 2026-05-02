@@ -2,7 +2,8 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>ml5 Image Classification</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ml5 Bildklassifikation - MobileNet</title>
 
   <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,66 +12,131 @@
 </head>
 <body>
 
-<h1>Bildklassifikation mit ml5 (MobileNet)</h1>
+<div class="header">
+  <h1>🤖 Bildklassifikation mit ML</h1>
+  <p>Klassifiziere Bilder mit dem vortrainierten MobileNet-Modell</p>
+</div>
 
 <!-- Beispielbilder -->
-<h2>✔ Korrekte Klassifikation</h2>
-<div class="grid">
-  <img src="assets/correct/cat.jpeg" onclick="classifyImage(this)">
-  <img src="assets/correct/dog.jpeg" onclick="classifyImage(this)">
-  <img src="assets/correct/pic_3.jpeg" onclick="classifyImage(this)">
-</div>
+<div class="examples-section">
+  <h2>📷 Beispielbilder testen</h2>
+  
+  <div class="examples-grid">
+    <div class="example-group">
+      <h3>✔ Gute Klassifikation</h3>
+      <div class="grid">
+        <img src="assets/correct/burger.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
+        <img src="assets/correct/pinguin.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
+        <img src="assets/correct/auto.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
+      </div>
+    </div>
 
-<h2>✘ Falsche Klassifikation</h2>
-<div class="grid">
-  <img src="assets/wrong/weird1.jpg" onclick="classifyImage(this)">
-  <img src="assets/wrong/weird2.jpg" onclick="classifyImage(this)">
-  <img src="assets/wrong/weird3.jpg" onclick="classifyImage(this)">
-</div>
-
-<!-- User Upload -->
-<h2>Eigenes Bild testen</h2>
-
-<div id="upload-section">
-  <input type="file" id="upload" accept="image/*">
-  <div id="dropzone">Bild hier hineinziehen</div>
-</div>
-
-<div class="container">
-  <div>
-    <img id="preview">
-    <button onclick="classifyUserImage()">Classify</button>
+    <div class="example-group">
+      <h3>⚠️ Schwierige Fälle</h3>
+      <div class="grid">
+        <img src="assets/wrong/burger.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
+        <img src="assets/wrong/pinguin.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
+        <img src="assets/wrong/auto.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
+      </div>
+    </div>
   </div>
+</div>
 
-  <div>
-    <canvas id="chart"></canvas>
+<!-- Upload / Klassifikation -->
+<div class="upload-section">
+  <h2>🎨 Eigenes Bild analysieren</h2>
+  
+  <div class="cards-container">
+    <!-- Card 1: Upload -->
+    <div class="card">
+      <h3>📤 Bild laden</h3>
+      <div id="dropzone">
+        <div class="dropzone-content">
+          <span class="dropzone-icon">📁</span>
+          <p>Bild hierher ziehen</p>
+          <span class="or">oder</span>
+        </div>
+      </div>
+      <input type="file" id="upload" accept="image/*" style="display: none;">
+      <button class="btn-upload" onclick="document.getElementById('upload').click()">Datei auswählen</button>
+      <p class="hint">JPG, PNG, WebP unterstützt</p>
+    </div>
+
+    <!-- Card 2: Bild -->
+    <div class="card">
+      <h3>🖼️ Vorschau</h3>
+      <div class="image-container">
+        <img id="preview" alt="Bildvorschau">
+        <p class="placeholder" id="placeholder">Bild wird hier angezeigt</p>
+      </div>
+    </div>
+
+    <!-- Card 3: Ergebnis -->
+    <div class="card">
+      <h3>📊 Klassifikation</h3>
+      <div class="chart-container">
+        <canvas id="chart"></canvas>
+        <p class="placeholder" id="chart-placeholder">Ergebnis wird hier angezeigt</p>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- Diskussion -->
-<h2>Diskussion</h2>
-<p>
-MobileNet funktioniert gut bei klaren, typischen Bildern aus dem ImageNet-Datensatz.
-Probleme treten bei ungewöhnlichen Perspektiven, schlechter Beleuchtung oder mehreren Objekten auf.
-Auch abstrahierte oder manipulierte Bilder führen oft zu Fehlklassifikationen.
-Dies liegt daran, dass das Modell auf typische Muster trainiert ist (Bias im Datensatz).
-</p>
+<div class="info-section">
+  <h2>ℹ️ Über das Modell</h2>
+  
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>💡 Wie es funktioniert</h3>
+      <p>
+        MobileNet ist ein vortrainiertes Convolutional Neural Network, das 1000 verschiedene Objektklassen 
+        (aus ImageNet) klassifizieren kann. Die Klassifikation läuft komplett im Browser, keine Daten 
+        werden an einen Server übertragen.
+      </p>
+    </div>
 
-<!-- Dokumentation -->
-<h2>Dokumentation</h2>
+    <div class="info-card">
+      <h3>⚠️ Limitierungen</h3>
+      <p>
+        MobileNet funktioniert gut bei klaren, typischen Bildern. Probleme treten bei ungewöhnlichen 
+        Perspektiven, schlechter Beleuchtung, mehreren Objekten oder abstrahierten Bildern auf. 
+        Dies liegt an Bias im Trainingsdatensatz.
+      </p>
+    </div>
 
-<h3>Technisch</h3>
-<ul>
-  <li>ml5.js: Vereinfachte Nutzung von Machine Learning im Browser</li>
-  <li>TensorFlow.js: ML-Backend</li>
-  <li>Chart.js: Visualisierung der Klassifikation</li>
-</ul>
+    <div class="info-card">
+      <h3>🛠️ Technologie</h3>
+      <ul>
+        <li><strong>ml5.js</strong> – ML-Wrapper für Browser</li>
+        <li><strong>TensorFlow.js</strong> – Modell-Backend</li>
+        <li><strong>Chart.js</strong> – Datenvisualisierung</li>
+      </ul>
+    </div>
+  </div>
+</div>
 
-<h3>Fachlich</h3>
-<p>
-Es wird ein vortrainiertes MobileNet-Modell verwendet. Die Klassifikation erfolgt clientseitig.
-Die Top-Klassen werden mit ihren Wahrscheinlichkeiten (Confidence) als Balkendiagramm dargestellt.
-</p>
+<!-- Footer mit Rechtlichem -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <h4>Information</h4>
+      <p>Bildklassifikation mit dem MobileNet-Modell – vollständig clientseitig, keine Datenspeicherung.</p>
+    </div>
+    <div class="footer-section">
+      <h4>Datenschutz</h4>
+      <p>Alle Bilder werden lokal im Browser verarbeitet. Es findet <strong>keine Datenübertragung</strong> zu Servern statt.</p>
+    </div>
+    <div class="footer-section">
+      <h4>Lizenzierung</h4>
+      <p>MobileNet: <a href="https://github.com/tensorflow/models" target="_blank">TensorFlow Models</a> | 
+         ml5.js: <a href="https://github.com/ml5js/ml5-library" target="_blank">MIT License</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 – Bildklassifikation Demo. Alle Rechte vorbehalten.</p>
+  </div>
+</footer>
 
 <script src="script.js"></script>
 
