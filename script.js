@@ -11,9 +11,20 @@ ml5.imageClassifier('MobileNet')
 // Klassifikation für Beispielbilder
 function classifyExample(img) {
   if (!classifier) return;
-  classifier.classify(img).then(results => {
-    showChart(results);
-  });
+  
+  // Bild in die Preview kopieren
+  const preview = document.getElementById("preview");
+  const placeholder = document.getElementById("placeholder");
+  
+  preview.src = img.src;
+  preview.onload = () => {
+    placeholder.classList.add('hidden');
+    preview.classList.add('visible');
+    // Klassifizieren
+    classifier.classify(preview).then(results => {
+      showChart(results);
+    });
+  };
 }
 
 // Klassifikation für User-Bild (automatisch bei Upload)
