@@ -12,28 +12,29 @@ ml5.imageClassifier('MobileNet')
 function classifyExample(img) {
   if (!classifier) return;
   
-  // Bild in die Preview kopieren
   const preview = document.getElementById("preview");
   const placeholder = document.getElementById("placeholder");
-  
-  preview.src = img.src;
-  preview.onload = () => {
+  const imageWrapper = img.closest('.image-wrapper');
+  const label = imageWrapper ? imageWrapper.querySelector('.result-label') : null;
+
+  const classify = () => {
     placeholder.classList.add('hidden');
     preview.classList.add('visible');
-    // Klassifizieren
-    classifier.classify(preview).then(results => {
-      // Result unter dem Bild anzeigen
-      const imageWrapper = img.closest('.image-wrapper');
-      if (imageWrapper) {
-        const label = imageWrapper.querySelector('.result-label');
-        const topResult = results[0];
-        const confidence = (topResult.confidence * 100).toFixed(0);
-        label.textContent = `${confidence}% ${topResult.label}`;
+    classifier.classify(preview, 5).then(results => {
+      if (label && results[0]) {
+        const confidence = (results[0].confidence * 100).toFixed(0);
+        label.textContent = `${confidence}% ${results[0].label}`;
       }
-      // Chart anzeigen
       showChart(results);
     });
   };
+
+  preview.src = img.src;
+  if (preview.complete && preview.naturalWidth) {
+    classify();
+  } else {
+    preview.onload = classify;
+  }
 }
 
 // Klassifikation für User-Bild (automatisch bei Upload)
@@ -41,7 +42,7 @@ function classifyUserImage() {
   if (!classifier) return;
   const img = document.getElementById("preview");
   if (img.src) {
-    classifier.classify(img).then(results => {
+    classifier.classify(img, 5).then(results => {
       showChart(results);
     });
   }
@@ -49,8 +50,9 @@ function classifyUserImage() {
 
 // Diagramm anzeigen
 function showChart(results) {
-  const labels = results.map(r => r.label);
-  const data = results.map(r => (r.confidence * 100).toFixed(2));
+  const topResults = results.slice(0, 5);
+  const labels = topResults.map(r => r.label);
+  const data = topResults.map(r => (r.confidence * 100).toFixed(2));
 
   if (currentChart) currentChart.destroy();
 
@@ -85,6 +87,11 @@ function showChart(results) {
       plugins: {
         legend: {
           display: false
+        },
+        tooltip: {
+          callbacks: {
+            label: context => `${context.parsed.x.toFixed(2)} %`
+          }
         }
       },
       scales: {
@@ -94,15 +101,16 @@ function showChart(results) {
         },
         y: {
           ticks: {
+            autoSkip: false,
+            maxTicksLimit: 5,
             callback: function(value) {
               const label = this.getLabelForValue(value);
-              // Zeilenumbruch bei langen Namen (max 20 Zeichen pro Zeile)
               if (label && label.length > 20) {
                 const words = label.split(' ');
                 let lines = [];
                 let currentLine = '';
                 words.forEach(word => {
-                  if ((currentLine + word).length > 20) {
+                  if ((currentLine + ' ' + word).trim().length > 20) {
                     lines.push(currentLine.trim());
                     currentLine = word;
                   } else {

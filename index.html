@@ -108,35 +108,92 @@
 </div>
 
 <!-- Diskussion -->
-<div class="info-section">
-  <h2>ℹ️ Über das Modell</h2>
+<div class="discussion-section">
+  <h2>💬 Diskussion & Ergebnisse</h2>
   
-  <div class="info-grid">
-    <div class="info-card">
-      <h3>💡 Wie es funktioniert</h3>
-      <p>
-        MobileNet ist ein vortrainiertes Convolutional Neural Network, das 1000 verschiedene Objektklassen 
-        (aus ImageNet) klassifizieren kann. Die Klassifikation läuft komplett im Browser, keine Daten 
-        werden an einen Server übertragen.
-      </p>
-    </div>
+  <div class="discussion-content">
+    <h3>Beobachtungen</h3>
+    <p>
+      Die Klassifikationsergebnisse zeigen deutlich, wie stark die Perspektive und Bildkomposition das Modell beeinflussen. 
+      <strong>Pinguine von vorne</strong> werden zuverlässig erkannt (>90%), während <strong>Pinguine von oben</strong> völlig falsch klassifiziert werden – 
+      das Modell hat auf typische Frontalaufnahmen aus ImageNet gelernt. Ähnlich beim Burger: Die <strong>Frontalansicht wird korrekt erkannt</strong>, 
+      aber sobald der Burger Augen und Zunge erhält (humoristisch manipuliert), verliert das Modell völlig den Bezug und klassifiziert ihn falsch. 
+      Das <strong>LED-Auto zeigt das extremste Problem</strong>: Trotz eindeutiger Auto-Form liefert das Modell keine Verbindung zum Original, weil die visuelle 
+      Textur (LEDs statt Lack) zu sehr vom Standard abweicht. Der <strong>Sportwagen in Schrägperspektive</strong> wird noch erkannt, weil diese Perspektive 
+      häufiger im Trainingsdatensatz vertreten ist. <strong>Fazit:</strong> MobileNet funktioniert gut bei typischen Szenen, bricht aber zusammen bei Manipulationen, 
+      unerwarteten Perspektiven oder visuellen Anomalien.
+    </p>
+  </div>
+</div>
 
-    <div class="info-card">
-      <h3>⚠️ Limitierungen</h3>
-      <p>
-        MobileNet funktioniert gut bei klaren, typischen Bildern. Probleme treten bei ungewöhnlichen 
-        Perspektiven, schlechter Beleuchtung, mehreren Objekten oder abstrahierten Bildern auf. 
-        Das Modell hat auf standardisierten ImageNet-Bildern gelernt – Abweichungen von diesen typischen 
-        Mustern werden daher unsicher klassifiziert oder ganz übersehen.
-      </p>
-    </div>
-
-    <div class="info-card">
-      <h3>🛠️ Technologie</h3>
+<!-- Dokumentation -->
+<div class="documentation-section">
+  <h2>📚 Dokumentation</h2>
+  
+  <div class="doc-grid">
+    <div class="doc-card">
+      <h3>1️⃣ Technische Implementierung</h3>
+      
+      <h4>Verwendete Frameworks & Bibliotheken:</h4>
       <ul>
-        <li><strong>ml5.js</strong> – ML-Wrapper für Browser</li>
-        <li><strong>TensorFlow.js</strong> – Modell-Backend</li>
-        <li><strong>Chart.js</strong> – Datenvisualisierung</li>
+        <li>
+          <strong>ml5.js</strong> – High-level API für Machine Learning im Browser. Bietet eine vereinfachte Schnittstelle 
+          zu TensorFlow.js und ermöglicht die Klassifikation mit dem MobileNet-Modell ohne tiefe ML-Kenntnisse.
+        </li>
+        <li>
+          <strong>TensorFlow.js</strong> – Low-level ML-Framework, das im Browser läuft. ml5.js nutzt TFJS als Backend, 
+          um das vortrainierte MobileNet-Modell zu laden und Inferenzen durchzuführen.
+        </li>
+        <li>
+          <strong>Chart.js</strong> – Datenvisualisierungs-Bibliothek zur Darstellung der Klassifikationsergebnisse 
+          als horizontales Balkendiagramm mit prozentualen Confidence-Werten.
+        </li>
+        <li>
+          <strong>GitHub Pages</strong> – Bereitstellung der Web-Anwendung als öffentliche Demo ohne Server-Setup.
+        </li>
+      </ul>
+      
+      <h4>Besonderheiten der Lösung:</h4>
+      <ul>
+        <li><strong>Clientseitige Verarbeitung:</strong> Alle Bilder werden lokal im Browser klassifiziert – kein Upload zu einem Server notwendig (Datenschutz!).</li>
+        <li><strong>Interaktive Labels:</strong> Unter jedem Beispielbild erscheint sofort das Top-Klassifikationsergebnis mit Prozentangabe, was die Genauigkeit transparent macht.</li>
+        <li><strong>Drag-and-Drop + File-Upload:</strong> Nutzer können Bilder per Drag-and-Drop oder Dateiauswahl laden; die Klassifikation startet automatisch.</li>
+        <li><strong>Responsive Layout:</strong> Die Anwendung funktioniert auf Desktop, Tablet und Mobile (CSS Grid mit Breakpoints).</li>
+        <li><strong>Zeilenumbruch bei langen Labels:</strong> Zeilenumruch beim Klassifikationsnamen, um die Chart-Lesbarkeit zu verbessern.</li>
+      </ul>
+    </div>
+
+    <div class="doc-card">
+      <h3>2️⃣ Fachliche Implementierung</h3>
+      
+      <h4>Ansatz:</h4>
+      <p>
+        Die Anwendung nutzt ein <strong>vortrainiertes MobileNet-Modell</strong> (basierend auf ImageNet mit 1000 Objektklassen), 
+        das keine weitere Anpassung benötigt. Der Nutzer kann Beispielbilder interaktiv klassifizieren und eigene Bilder hochladen.
+      </p>
+      
+      <h4>Implementierung der Logik:</h4>
+      <ul>
+        <li><strong>Modell-Laden:</strong> Beim Seitenload wird das MobileNet-Modell asynchron geladen (ml5.imageClassifier('MobileNet')).</li>
+        <li><strong>Klassifikation:</strong> Die Funktion classifier.classify(img) gibt ein Array von Objekten zurück: [{label, confidence}, ...].</li>
+        <li><strong>Visualisierung:</strong> Die Top-5 Ergebnisse werden mit Chart.js als horizontales Balkendiagramm dargestellt; Confidence wird auf Prozent skaliert.</li>
+        <li><strong>Example-Images:</strong> Beim Klick auf ein Beispielbild wird dieses in die Preview kopiert, klassifiziert und das Top-Ergebnis unter dem Bild angezeigt.</li>
+        <li><strong>User-Upload:</strong> Hochgeladene oder per Drag-Drop gezogene Bilder werden automatisch klassifiziert und visualisiert.</li>
+      </ul>
+      
+      <h4>Ergebnisse & Interpretation:</h4>
+      <p>
+        Die Klassifikationsergebnisse zeigen die <strong>Stärken und Schwächen von vortrainierten CNNs:</strong> Sie funktionieren 
+        exzellent bei typischen, zentrierten Objekten, brechen aber bei Manipulationen, extremen Perspektiven oder visuellen Anomalien zusammen. 
+        Dies ist ein Beispiel für <strong>Dataset Bias</strong> – das Modell hat die Muster des ImageNet-Datensatzes gelernt und generalisiert schlecht auf Abweichungen.
+      </p>
+      
+      <h4>Quellen & Referenzen:</h4>
+      <ul>
+        <li><a href="https://learn.ml5js.org/docs/#/" target="_blank">ml5.js Documentation</a></li>
+        <li><a href="https://github.com/tensorflow/models" target="_blank">TensorFlow Models (MobileNet)</a></li>
+        <li><a href="https://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf" target="_blank">ImageNet Classification Paper</a></li>
+        <li><a href="https://www.chartjs.org/" target="_blank">Chart.js Documentation</a></li>
       </ul>
     </div>
   </div>
