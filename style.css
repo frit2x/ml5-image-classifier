@@ -355,34 +355,41 @@ canvas {
 .discussion-section {
   max-width: 1200px;
   margin: 40px auto;
-  background: linear-gradient(135deg, rgba(102,126,234,0.12) 0%, rgba(118,75,162,0.12) 100%);
+  background: linear-gradient(135deg, rgba(102,126,234,0.16) 0%, rgba(118,75,162,0.16) 100%);
   border-radius: 18px;
-  padding: 30px;
-  border: 1px solid rgba(102,126,234,0.25);
-  box-shadow: 0 16px 40px rgba(102,126,234,0.12);
+  padding: 32px;
+  border: 1px solid rgba(102,126,234,0.28);
+  box-shadow: 0 18px 42px rgba(102,126,234,0.14);
 }
 
 .discussion-section h2 {
-  color: #333;
-  margin-bottom: 20px;
+  color: #222;
+  margin-bottom: 18px;
   text-align: center;
 }
 
+.discussion-content {
+  background: rgba(255,255,255,0.9);
+  border-radius: 14px;
+  padding: 24px;
+  border: 1px solid rgba(102,126,234,0.18);
+}
+
 .discussion-content h3 {
-  color: #667eea;
-  margin-bottom: 15px;
+  color: #3d4af0;
+  margin-bottom: 16px;
   margin-top: 0;
 }
 
 .discussion-content p {
-  color: #555;
-  line-height: 1.8;
-  font-size: 0.95em;
+  color: #444;
+  line-height: 1.75;
+  font-size: 1em;
 }
 
 .discussion-content strong {
-  color: #333;
-  font-weight: 600;
+  color: #2a2a72;
+  font-weight: 700;
 }
 
 /* Dokumentation Section */
@@ -390,9 +397,9 @@ canvas {
   max-width: 1200px;
   margin: 40px auto;
   background: white;
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 30px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.12);
   margin-bottom: 40px;
 }
 
@@ -409,32 +416,34 @@ canvas {
 }
 
 .doc-card {
-  padding: 25px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border-left: 4px solid #667eea;
+  padding: 24px;
+  background: #fafbff;
+  border-radius: 12px;
+  border-left: 5px solid #667eea;
+  min-height: 380px;
 }
 
 .doc-card h3 {
   color: #333;
-  margin-bottom: 20px;
-  font-size: 1.1em;
+  margin-bottom: 22px;
+  font-size: 1.15em;
 }
 
 .doc-card h4 {
   color: #667eea;
   margin: 15px 0 10px 0;
-  font-size: 0.95em;
+  font-size: 1em;
 }
 
 .doc-card p, .doc-card ul {
-  color: #555;
-  font-size: 0.9em;
-  line-height: 1.6;
+  color: #444;
+  font-size: 0.95em;
+  line-height: 1.7;
 }
 
 .doc-card ul {
   margin-left: 20px;
+  list-style-type: disc;
 }
 
 .doc-card li {
@@ -451,6 +460,7 @@ canvas {
   color: #764ba2;
   text-decoration: underline;
 }
+
 
 /* Footer */
 .footer {
