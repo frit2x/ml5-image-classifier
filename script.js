@@ -22,6 +22,15 @@ function classifyExample(img) {
     preview.classList.add('visible');
     // Klassifizieren
     classifier.classify(preview).then(results => {
+      // Result unter dem Bild anzeigen
+      const imageWrapper = img.closest('.image-wrapper');
+      if (imageWrapper) {
+        const label = imageWrapper.querySelector('.result-label');
+        const topResult = results[0];
+        const confidence = (topResult.confidence * 100).toFixed(0);
+        label.textContent = `${confidence}% ${topResult.label}`;
+      }
+      // Chart anzeigen
       showChart(results);
     });
   };

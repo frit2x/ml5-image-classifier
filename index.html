@@ -20,24 +20,48 @@
 
 <!-- Beispielbilder -->
 <div class="examples-section">
-  <h2>📷 Beispielbilder testen</h2>
+  <h2>Testen Sie das MobileNet-Modell</h2>
+  <p class="examples-intro">
+    <strong>Klicken Sie auf die Bilder</strong> und beobachten Sie die Klassifikations-Ergebnisse in Prozent. 
+    Wie beeinflussen Details das Ergebnis? Der Burger hat Augen – verwirrt das das Modell? 
+    Die Perspektive ändert alles – werden die Pinguine noch erkannt? Und das LED-Auto: Offensichtlich ein Auto, 
+    aber verfälscht das visuelle Rauschen die genaue Klassifikation?
+  </p>
   
   <div class="examples-grid">
     <div class="example-group">
       <h3>✔ Gute Klassifikation</h3>
       <div class="grid">
-        <img src="assets/correct/burger.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
-        <img src="assets/correct/pinguin.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
-        <img src="assets/correct/auto.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
+        <div class="image-wrapper">
+          <img src="assets/correct/burger.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
+          <div class="result-label" data-image="assets/correct/burger.jpeg">-</div>
+        </div>
+        <div class="image-wrapper">
+          <img src="assets/correct/pinguin.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
+          <div class="result-label" data-image="assets/correct/pinguin.jpeg">-</div>
+        </div>
+        <div class="image-wrapper">
+          <img src="assets/correct/auto.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
+          <div class="result-label" data-image="assets/correct/auto.jpeg">-</div>
+        </div>
       </div>
     </div>
 
     <div class="example-group">
       <h3>⚠️ Schwierige Fälle</h3>
       <div class="grid">
-        <img src="assets/wrong/burger.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
-        <img src="assets/wrong/pinguin.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
-        <img src="assets/wrong/auto.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
+        <div class="image-wrapper">
+          <img src="assets/wrong/burger.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
+          <div class="result-label" data-image="assets/wrong/burger.jpeg">-</div>
+        </div>
+        <div class="image-wrapper">
+          <img src="assets/wrong/pinguin.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
+          <div class="result-label" data-image="assets/wrong/pinguin.jpeg">-</div>
+        </div>
+        <div class="image-wrapper">
+          <img src="assets/wrong/auto.jpeg" onclick="classifyExample(this)" title="Klicken zum Klassifizieren">
+          <div class="result-label" data-image="assets/wrong/auto.jpeg">-</div>
+        </div>
       </div>
     </div>
   </div>
@@ -102,7 +126,8 @@
       <p>
         MobileNet funktioniert gut bei klaren, typischen Bildern. Probleme treten bei ungewöhnlichen 
         Perspektiven, schlechter Beleuchtung, mehreren Objekten oder abstrahierten Bildern auf. 
-        Dies liegt an Bias im Trainingsdatensatz.
+        Das Modell hat auf standardisierten ImageNet-Bildern gelernt – Abweichungen von diesen typischen 
+        Mustern werden daher unsicher klassifiziert oder ganz übersehen.
       </p>
     </div>
 
